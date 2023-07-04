@@ -1,0 +1,36 @@
+version: '3'
+
+services:
+
+  php:
+    container_name: nfe-114-php
+    build:
+      context: ./
+    volumes:
+      - ./html:/var/www/html/
+    ports:
+      - '80:80'
+
+  mysql:
+    container_name: nfe-114-mysql
+    image: mysql:8.0.20
+    command: --default-authentication-plugin=mysql_native_password
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - '3306:3306'
+
+  phpmyadmin:
+    container_name: nfe-114-phpmyadmin
+    image: phpmyadmin/phpmyadmin:latest
+    environment:
+      PMA_ARBITRARY: 1
+      PMA_HOST: mysql
+      PMA_PORT: 3306
+      PMA_USER: root
+      PMA_PASSWORD: root
+      UPLOAD_LIMIT: 512M
+    ports:
+      - '8080:80'
+    depends_on:
+      - mysql
