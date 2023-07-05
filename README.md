@@ -26,8 +26,16 @@ docker exec -it nfe-114-php bash -c 'composer install'
 docker exec -it nfe-114-mysql mysql -u root -proot -e "CREATE DATABASE db_project;"
 ```
 
+- ## Load the database schema
+
 ```Shell
-docker exec -it nfe-114-php bash -c './vendor/bin/doctrine orm:schema-tool:update' >/dev/null
+docker exec -it nfe-114-php bash -c './vendor/bin/doctrine orm:schema-tool:update --force'
+```
+
+- ## Load the data fixtures
+
+```Shell
+docker exec -it nfe-114-php bash -c 'php loadDataFixtures.php'
 ```
 
 - ## (Optional) Access the PHP container's bash in a terminal

@@ -26,7 +26,7 @@ class Post
     // Relations
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'posts')]
-    private ?User $author = null;
+    private ?User $user = null;
 
     #[ORM\ManyToOne(targetEntity: Game::class, inversedBy: 'posts')]
     private ?Game $game = null;
@@ -68,14 +68,14 @@ class Post
         return $this;
     }
 
-    public function getAuthor(): ?User
+    public function getUser(): ?User
     {
-        return $this->author;
+        return $this->user;
     }
 
-    public function setAuthor(?User $author): self
+    public function setUser(?User $user): self
     {
-        $this->author = $author;
+        $this->user = $user;
 
         return $this;
     }

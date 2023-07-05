@@ -21,7 +21,7 @@ class Comment
     // Relations
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'comments')]
-    private ?User $author = null;
+    private ?User $user = null;
 
     #[ORM\ManyToOne(targetEntity: Post::class, inversedBy: 'comments')]
     private ?Post $post = null;
@@ -45,14 +45,14 @@ class Comment
         return $this;
     }
 
-    public function getAuthor(): ?User
+    public function getUser(): ?User
     {
-        return $this->author;
+        return $this->user;
     }
 
-    public function setAuthor(?User $author): self
+    public function setUser(?User $user): self
     {
-        $this->author = $author;
+        $this->user = $user;
 
         return $this;
     }
