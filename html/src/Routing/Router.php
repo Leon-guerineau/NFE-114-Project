@@ -94,6 +94,7 @@ class Router
    * @return array Empty if controller doesn't have any parameter
    */
   private function getMethodParams(string $controller, string $method): array
+  // TODO-LEON : Change to get route params ( ex : product/1 = productShow(Product $product) )
   {
     $methodInfos = new ReflectionMethod($controller . '::' . $method);
     $methodParameters = $methodInfos->getParameters();
@@ -112,6 +113,7 @@ class Router
   }
 
   public function registerRoutes(): void
+  // TODO-LEON : Remove, is replaced by AnnotationDirectoryLoader in index.php
   {
     $controllerClassNames = Filesystem::getClassNames(self::CONTROLLERS_DIRECTORY);
 

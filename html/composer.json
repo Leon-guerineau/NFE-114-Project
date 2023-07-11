@@ -24,7 +24,8 @@
     "doctrine/annotations": "^1.13",
     "symfony/dotenv": "^5.4",
     "twig/twig": "^3.0",
-    "psr/container": "^2.0"
+    "psr/container": "^2.0",
+    "symfony/framework-bundle": "^6.1"
   },
   "require-dev": {
     "doctrine/data-fixtures": "^1.6",

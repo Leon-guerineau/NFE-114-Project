@@ -13,14 +13,14 @@ class UserController extends AbstractController
 {
   private UserRepository $userRepository;
 
-  public function __construct(Environment $twig, UserRepository $userRepository)
+  public function __construct(Environment $twig, UserRepository $userRepository,private EntityManager $em)
   {
     parent::__construct($twig);
     $this->userRepository = $userRepository;
   }
 
   #[Route(path: "/user/create", name: 'user_create')]
-  public function create(EntityManager $em)
+  public function create()
   {
     $user = new User();
 
@@ -30,8 +30,8 @@ class UserController extends AbstractController
       ->setEmail("mozefebid@nol.mg")
     ;
 
-    $em->persist($user);
-    $em->flush();
+    $this->em->persist($user);
+    $this->em->flush();
   }
 
   #[Route(path: "/users/list", name: 'users_list')]

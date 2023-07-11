@@ -1,6 +1,6 @@
 <?php
 
-require_once __DIR__ . '/../vendor/autoload.php';
+$autoload = require __DIR__ . '/../vendor/autoload.php';
 
 if (
   php_sapi_name() !== 'cli' && // Pas en mode ligne de commande
@@ -15,10 +15,18 @@ use App\DependencyInjection\Container;
 use App\Repository\UserRepository;
 use App\Routing\RouteNotFoundException;
 use App\Routing\Router;
+use Doctrine\Common\Annotations\AnnotationReader;
+use Doctrine\Common\Annotations\AnnotationRegistry;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping\Driver\AttributeDriver;
 use Doctrine\ORM\ORMSetup;
+use Symfony\Bundle\FrameworkBundle\Routing\AnnotatedRouteControllerLoader;
+use Symfony\Component\Config\FileLocator;
 use Symfony\Component\Dotenv\Dotenv;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Loader\AnnotationDirectoryLoader;
+use Symfony\Component\Routing\Matcher\UrlMatcher;
+use Symfony\Component\Routing\RequestContext;
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
 
@@ -69,6 +77,37 @@ $container->set(UserRepository::class, $userRepository);
 if (php_sapi_name() === 'cli') {
   return;
 }
+
+// Register the Composer autoloader with the AnnotationRegistry
+AnnotationRegistry::registerLoader([$autoload, 'loadClass']);
+
+// Create a new AnnotationDirectoryLoader to load routes from annotations
+$autoload = new AnnotationDirectoryLoader(
+    new FileLocator(__DIR__ . '/../src/Controller/'),
+    new AnnotatedRouteControllerLoader(
+        new AnnotationReader()
+    )
+);
+
+// Load routes from annotated controllers
+$routes = $autoload->load(__DIR__ . '/../src/Controller/');
+
+// Initialize the RequestContext object
+$context = RequestContext::fromUri($_SERVER['REQUEST_URI']);
+$context->fromRequest(Request::createFromGlobals());
+
+// Create a UrlMatcher to match the current request against the loaded routes
+$matcher = new UrlMatcher($routes, $context);
+
+// Retrieve the parameters from the context of the Request
+$parameters = $matcher->match($context->getPathInfo());
+
+// Extract the controller and action from the "_controller" parameter
+$controllerInfo = explode('::',$parameters['_controller']);
+$controller = new $controllerInfo[0];
+$action = $controllerInfo[1];
+
+var_dump($parameters['_controller']);
 
 $router = new Router($container);
 $router->registerRoutes();
