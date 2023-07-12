@@ -2,19 +2,21 @@
 
 namespace App\Controller;
 
-use App\Routing\Attribute\Route;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
 
 class IndexController extends AbstractController
 {
-  #[Route(path: "/", name: 'home')]
-  public function home()
-  {
-    echo $this->twig->render('home.html.twig');
-  }
+    #[Route(path: "/", name: 'home')]
+    public function home(): Response
+    {
+        return $this->render('home.html.twig');
+    }
 
-  #[Route(path: "/contact", name: 'contact')]
-  public function contact()
-  {
-    echo $this->twig->render('contact.html.twig');
-  }
+    #[Route(path: "/contact/{id}", name: 'contact')]
+    public function contact($params): Response
+    {
+        echo $params['id'];
+        return $this->render('contact.html.twig');
+    }
 }

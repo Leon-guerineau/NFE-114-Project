@@ -104,19 +104,13 @@ $parameters = $matcher->match($context->getPathInfo());
 
 // Extract the controller and action from the "_controller" parameter
 $controllerInfo = explode('::',$parameters['_controller']);
-$controller = new $controllerInfo[0];
+$controller = $controllerInfo[0];
 $action = $controllerInfo[1];
 
-var_dump($parameters['_controller']);
-
 $router = new Router($container);
-$router->registerRoutes();
-
-$requestUri = $_SERVER['REQUEST_URI'];
-$requestMethod = $_SERVER['REQUEST_METHOD'];
 
 try {
-  $router->execute($requestUri, $requestMethod);
+  $router->execute($controller, $action, $parameters);
 } catch (RouteNotFoundException $e) {
   http_response_code(404);
   echo "<p>Page non trouvée</p>";

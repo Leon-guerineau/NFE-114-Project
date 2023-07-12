@@ -4,23 +4,24 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Repository\UserRepository;
-use App\Routing\Attribute\Route;
-use DateTime;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
 use Doctrine\ORM\EntityManager;
 use Twig\Environment;
 
 class UserController extends AbstractController
 {
-  private UserRepository $userRepository;
-
-  public function __construct(Environment $twig, UserRepository $userRepository,private EntityManager $em)
+  public function __construct(
+      Environment $twig,
+      private UserRepository $userRepository,
+      private EntityManager $em
+  )
   {
     parent::__construct($twig);
-    $this->userRepository = $userRepository;
   }
 
   #[Route(path: "/user/create", name: 'user_create')]
-  public function create()
+  public function create(): void
   {
     $user = new User();
 
@@ -35,12 +36,12 @@ class UserController extends AbstractController
   }
 
   #[Route(path: "/users/list", name: 'users_list')]
-  public function list()
+  public function list(): Response
   {
     // récupérer tous les utilisateurs
     $users = $this->userRepository->findAll();
 
     // Transmettre à la vue la liste des utilisateurs à afficher
-    echo $this->twig->render('users/list.html.twig', ['users' => $users]);
+    return $this->render('users/list.html.twig', ['users' => $users]);
   }
 }
