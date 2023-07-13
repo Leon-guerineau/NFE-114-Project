@@ -9,6 +9,14 @@ if (
   return false;
 }
 
+if (
+    php_sapi_name() !== 'cli' && // Pas en mode ligne de commande
+    preg_match('/\.(?:css|js)$/', $_SERVER['REQUEST_URI']) // extension = asset
+) {
+    include __DIR__ . '/assets/' . $_SERVER['REQUEST_URI'];
+    return false;
+}
+
 use App\Controller\IndexController;
 use App\Controller\UserController;
 use App\DependencyInjection\Container;
