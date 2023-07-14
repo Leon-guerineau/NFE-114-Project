@@ -1,0 +1,9 @@
+<div class="miniprofile">
+    <a href="/post/show/{{ post.id }}">
+        {#<img class="post-miniprofile-picture" src="{{ asset(post.getPicturePath) }}" alt="Image du post">#}
+        {# TODO : pic-post#}
+        {{ post.getTitle }}
+    </a><br>
+    By : {{ post.user.username }}<br>
+    For : {{ post.game.title }}
+</div>

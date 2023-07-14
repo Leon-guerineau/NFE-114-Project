@@ -1,0 +1,62 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    <div class="post">
+        <div class="post-content">
+            <h1> {{ post.title }}</h1> <br>
+            <div class="date">
+                <p>published the {{ post.createdAt|date("Y-m-d \a\t H:i:s", "Europe/Paris") }}</p>
+                {% if post.updatedAt %}
+                    <p>Updated the {{ post.updatedAt|date("Y-m-d \a\t H:i:s", "Europe/Paris") }}</p> <br>
+                {% endif %}
+            </div>
+            {% if post.descrition %}
+                <h3> {{ post.descrition }}</h3> <br>
+            {% endif %}
+        </div>
+        {#<div class="post-picture">#}
+            {#<img src="{{ asset(post.getPicturePath) }}" alt="Image du Post">#}
+        {#</div>#}
+        {#TODO : pic-post#}
+    </div>
+
+    <hr style="height: 5px">
+
+    <div class="post-sources">
+        <div class="post-author">
+            {% include 'user/user-miniprofile.html.twig' with {user:post.user} %}
+        </div>
+        <div class="post-game">
+            {% include 'game/game-miniprofile.html.twig' with {game:post.game} %}
+        </div>
+        {#{% if is_granted('ROLE_USER') and post.getAuthor.getId == app.user.getId or is_granted('ROLE_ADMIN') %}#}
+            {#<div class="post-actions">#}
+                {#<p>Actions :</p>#}
+                {#<a href="{{ path("post_delete", {postId:post.getId}) }}">#}
+                    {#<button type="button" class="btn btn btn-danger btn-lg">Supprimer</button>#}
+                {#</a>#}
+                {#{% if post.getAuthor.getId == app.user.getId %}#}
+                    {#<a href="{{ path("post_modify", {postId:post.getId}) }}">#}
+                        {#<button type="button" class="btn btn-primary btn-lg">Modifier</button>#}
+                    {#</a>#}
+                {#{% endif %}#}
+            {#</div>#}
+        {#{% endif %}#}
+        {#TODO : auth#}
+    </div>
+
+    <hr style="height: 5px">
+
+    <h3>Comments</h3>
+    <div class="post-comments">
+        {#<div class="post-comment-create">#}
+            {#<a href="/comment/create/{{ post.id }}">#}
+                {#<button type="button" class="btn btn-primary btn-lg">Add a comment</button>#}
+            {#</a>#}
+        {#</div><br>#}
+        {# TODO form-comment #}
+        {% for comment in post.comments %}
+            {% include 'comment/comment-miniprofile.html.twig' with {comment:comment} %}
+            <hr style="width: 50%">
+        {% endfor %}
+    </div>
+{% endblock %}

@@ -1,0 +1,31 @@
+<div class="comment">
+    <div class="comment-sources">
+        {% include 'user/user-miniprofile.html.twig' with {user:comment.user} %}
+    </div>
+    <div class="comment-informations">
+        <div class="date">
+            Published the {{ comment.createdAt|date("Y-m-d \a\t H:i:s", "Europe/Paris") }}<br>
+            {% if comment.updatedAt %}
+                updated the {{ comment.updatedAt|date("Y-m-d \a\t H:i:s", "Europe/Paris") }}
+            {% endif %}
+        </div>
+    </div>
+    <div class="comment-content">
+        {{ comment.content }}
+    </div>
+    {#<div class="comment-buttons">#}
+        {##}{# affichage du boutton de suppression de commentaire pour l'auteur du commentaire ou un admin #}
+        {#{% if is_granted('ROLE_USER') and comment.getAuthor.getId == app.user.getId or is_granted('ROLE_ADMIN') %}#}
+            {#<a href="{{ path("comment_delete", {commentId:comment.getId}) }}">#}
+                {#<button type="button" class="btn btn btn-danger btn-lg">Supprimer</button>#}
+            {#</a>#}
+        {##}{# affichage du boutton de modification de commentaire pour l'auteur du commentaire uniquement #}
+            {#{% if comment.getAuthor.getId == app.user.getId %}#}
+                {#<a href="{{ path("comment_modify", {commentId:comment.getId}) }}">#}
+                    {#<button type="button" class="btn btn-primary btn-lg">Modifier</button>#}
+                {#</a>#}
+            {#{% endif %}#}
+        {#{% endif %}#}
+    {#</div>#}
+    {#TODO : auth#}
+</div>

@@ -34,6 +34,7 @@ use Symfony\Bundle\FrameworkBundle\Routing\AnnotatedRouteControllerLoader;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\Dotenv\Dotenv;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 use Symfony\Component\Routing\Loader\AnnotationDirectoryLoader;
 use Symfony\Component\Routing\Matcher\UrlMatcher;
 use Symfony\Component\Routing\RequestContext;
@@ -113,8 +114,13 @@ $context->fromRequest(Request::createFromGlobals());
 // Create a UrlMatcher to match the current request against the loaded routes
 $matcher = new UrlMatcher($routes, $context);
 
-// Retrieve the parameters from the context of the Request
-$parameters = $matcher->match($context->getPathInfo());
+try {
+    // Retrieve the parameters from the context of the Request
+    $parameters = $matcher->match($context->getPathInfo());
+} catch (ResourceNotFoundException $exception) {
+    header('Location: /');
+    exit();
+}
 
 // Extract the controller and action from the "_controller" parameter
 $controllerInfo = explode('::',$parameters['_controller']);
@@ -123,10 +129,4 @@ $action = $controllerInfo[1];
 
 $router = new Router($container);
 
-try {
-  $router->execute($controller, $action, $parameters);
-} catch (RouteNotFoundException $e) {
-  http_response_code(404);
-  echo "<p>Page non trouvée</p>";
-  echo "<p>" . $e->getMessage() . "</p>";
-}
+$router->execute($controller, $action, $parameters);

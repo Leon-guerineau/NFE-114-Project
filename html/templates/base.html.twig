@@ -9,9 +9,9 @@
 	{% block javascripts %}{% endblock %}
 </head>
 	<body>
-{#	{% include 'navbar.html.twig' %}#}
-{#	{% include 'admin-navbar.html.twig' %}#}
-{#	{% include '_flashes.html.twig' %}#}
+	{% include 'navbar.html.twig' %}
+	{#{% include '_flashes.html.twig' %}#}
+	{# TODO : flash #}
 	<div class="header">{% block header %}{% endblock %}</div>
 	<div class="main">{% block body %}{% endblock %}</div>
 	</body>
