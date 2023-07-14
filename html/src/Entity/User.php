@@ -27,10 +27,10 @@ class User
     #[ORM\Column(type: 'string', length: 50)]
     private ?string $username = null;
 
-    #[ORM\Column(type:'datetime_immutable')]
-    private \DateTimeImmutable $createdAt;
+    #[ORM\Column(name:'created_at', type:'datetime_immutable')]
+    private \DateTimeImmutable $created_at;
 
-    #[ORM\Column(type:'datetime_immutable', nullable: true)]
+    #[ORM\Column(name:'updated_at', type:'datetime_immutable', nullable: true)]
     private ?\DateTimeImmutable $updatedAt = null;
 
     // Relations

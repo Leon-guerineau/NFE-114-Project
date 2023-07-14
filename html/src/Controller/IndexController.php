@@ -7,7 +7,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class IndexController extends AbstractController
 {
-    #[Route(path: "/", name: 'home')]
+//    #[Route(path: "/", name: 'home')]
     public function home(): Response
     {
         return $this->render('home.html.twig');

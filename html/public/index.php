@@ -13,13 +13,15 @@ if (
     php_sapi_name() !== 'cli' && // Pas en mode ligne de commande
     preg_match('/\.(?:css|js)$/', $_SERVER['REQUEST_URI']) // extension = asset
 ) {
-    include __DIR__ . '/assets/' . $_SERVER['REQUEST_URI'];
+//    include __DIR__ . '/assets/' . $_SERVER['REQUEST_URI'];
     return false;
 }
 
 use App\Controller\IndexController;
 use App\Controller\UserController;
 use App\DependencyInjection\Container;
+use App\Repository\GameRepository;
+use App\Repository\PostRepository;
 use App\Repository\UserRepository;
 use App\Routing\RouteNotFoundException;
 use App\Routing\Router;
@@ -73,6 +75,8 @@ $twig = new Environment($loader, [
 
 // --- REPOSITORIES
 $userRepository = new UserRepository($entityManager);
+$postRepository = new PostRepository($entityManager);
+$gameRepository = new GameRepository($entityManager);
 // --- REPOSITORIES
 
 // --- CONTAINER
@@ -80,6 +84,8 @@ $container = new Container();
 $container->set(EntityManager::class, $entityManager);
 $container->set(Environment::class, $twig);
 $container->set(UserRepository::class, $userRepository);
+$container->set(PostRepository::class, $postRepository);
+$container->set(GameRepository::class, $gameRepository);
 // --- CONTAINER
 
 if (php_sapi_name() === 'cli') {

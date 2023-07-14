@@ -1,11 +1,11 @@
 RewriteEngine On
-
-# Redirect the default directory request (/) to public/index.php
 DirectoryIndex ./public/index.php
 
-# Redirect every other requests (/any) to public/index.php
-RewriteBase /
+# Redirect tyle.css file request
+RewriteCond %{REQUEST_URI} style\.css [NC]
+RewriteRule ^(.*)$ public/assets/style.css [L]
+
+# Redirect all other requests to public.php
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule . ./public/index.php [L]
-
+RewriteRule ^(.*)$ public/index.php [QSA,L]

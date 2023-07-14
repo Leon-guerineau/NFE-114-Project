@@ -24,10 +24,10 @@ class Post
     #[ORM\Column(type: 'text')]
     private ?string $description = null;
 
-    #[ORM\Column(type:'datetime_immutable')]
+    #[ORM\Column(name:'created_at', type:'datetime_immutable')]
     private \DateTimeImmutable $createdAt;
 
-    #[ORM\Column(type:'datetime_immutable', nullable: true)]
+    #[ORM\Column(name:'updated_at', type:'datetime_immutable', nullable: true)]
     private ?\DateTimeImmutable $updatedAt = null;
 
     // Relations
