@@ -44,6 +44,11 @@
 
       ![Modal](./modal.png)
 
+      DataFixtures were msde using the following packages :
+      - doctrine/data-fixtures
+      - fakerphp/faker
+      - mbezhanov/faker-provider-collection
+
     - ### Views
 
       The views were managed using Twig and all templates were taken from the symfony 
@@ -87,4 +92,4 @@
     - The account management and authorizations
     - The forms
 
-    But you can see those features in action by launching the symfony version of the project
+    But you can see those features in action by launching [the symfony version of the project](https://github.com/Leon-guerineau/projet-symfony).
