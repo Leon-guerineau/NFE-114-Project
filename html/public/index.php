@@ -114,8 +114,8 @@ $context->fromRequest(Request::createFromGlobals());
 // Create a UrlMatcher to match the current request against the loaded routes
 $matcher = new UrlMatcher($routes, $context);
 
+// Retrieve the parameters from the context of the Request
 try {
-    // Retrieve the parameters from the context of the Request
     $parameters = $matcher->match($context->getPathInfo());
 } catch (ResourceNotFoundException $exception) {
     header('Location: /');
@@ -129,4 +129,5 @@ $action = $controllerInfo[1];
 
 $router = new Router($container);
 
+// Execute the controller action associated with the route
 $router->execute($controller, $action, $parameters);

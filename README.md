@@ -1,67 +1,90 @@
-# Tasks Organizer
+# Game Forum
 
-A tool who's primary objective is to help its users to manage their tasks
+  - ## Installation
 
-# Instructions
+    - ### Start the docker environment
 
-- ## Start the docker environment
+      `docker-compose up -d`
 
-```Shell
-docker-compose up -d
-```
+      Link to the project : http://localhost
 
-Link to the project : http://localhost
+      Link to the PHPMyAdmin : https://localhost:8080
 
-Link to the PHPMyAdmin : https://localhost:8080
+    - ### Install the composer packages
 
-- ## Install the composer packages
+      `docker exec -it nfe-114-php bash -c 'composer install'`
 
-```Shell
-docker exec -it nfe-114-php bash -c 'composer install'
-```
+    - ### Create the database
 
-- ## Create the database
+      `docker exec -it nfe-114-mysql mysql -u root -proot -e "CREATE DATABASE db_project;"`
 
-```Shell
-docker exec -it nfe-114-mysql mysql -u root -proot -e "CREATE DATABASE db_project;"
-```
+    - ### Load the database schema
 
-- ## Load the database schema
+      `docker exec -it nfe-114-php bash -c './vendor/bin/doctrine orm:schema-tool:update --force'`
 
-```Shell
-docker exec -it nfe-114-php bash -c './vendor/bin/doctrine orm:schema-tool:update --force'
-```
+    - ### Load the data fixtures
 
-- ## Load the data fixtures
+      `docker exec -it nfe-114-php bash -c 'php loadDataFixtures.php'`
 
-```Shell
-docker exec -it nfe-114-php bash -c 'php loadDataFixtures.php'
-```
+    - ### (Optional) Access the PHP container's bash in a terminal
 
-- ## (Optional) Access the PHP container's bash in a terminal
+      `docker exec -it nfe-114-php bash`
 
-```Shell
-docker exec -it nfe-114-php bash
-```
+  - ## Description
 
-./vendor/bin/doctrine
-./vendor/bin/doctrine-migrations
+    The goal of this project is to create an MVC type PHP application without frameworks.
 
-# Description
+    To do that I have decided to remake [the first Symfony project I did](https://github.com/Leon-guerineau/projet-symfony) which has a lot of features I could reuse.
 
-## Functional objectives
+    I also used [this project](https://github.com/ld-web/studi-mvc) as a base because features like Doctrine, Twig and many others were already setup
 
-The many features of the projects will be added in multiple parts
+    - ### Modals
 
-  - ### Part 1 : User management and simple Task management
+      For the modals I used doctrine and used the sames Entities as the symfony projects with some tweaking
 
-    - User management with register, login, profile, edit and delete pages.
+      ![Modal](./modal.png)
 
-    - Tasks management with a list by author which will be the homepage and pages for the creation, profile, update and deletion of tasks.
+    - ### Views
 
-- ## Technical Objectives
+      The views were managed using Twig and all templates were taken from the symfony 
 
+    - ### controllers
 
-I wanted to use gedmo/doctrine-extensions and create an abstract class containing the Timestampaable fields createdAt & updatedAt that could have been inherited by Post and Commentaire Entities
+      The routes for the controller functions are managed with the Route class of the symfony-framework-bundle package so that they can be more easily accessed.
 
+      ```PHP
+      // index.php 
+      
+      $autoload = require __DIR__ . '/../vendor/autoload.php';
+      
+      // Register the Composer autoloader with the AnnotationRegistry
+      AnnotationRegistry::registerLoader([$autoload, 'loadClass']);
+      
+      // Create a new AnnotationDirectoryLoader to load routes from annotations
+      $autoload = new AnnotationDirectoryLoader(
+          new FileLocator(__DIR__ . '/../src/Controller/'),
+          new AnnotatedRouteControllerLoader(
+              new AnnotationReader()
+          )
+      );
+      
+      // Load routes from annotated controllers
+      $routes = $autoload->load(__DIR__ . '/../src/Controller/');
+      
+      // Initialize the RequestContext object
+      $context = RequestContext::fromUri($_SERVER['REQUEST_URI']);
+      $context->fromRequest(Request::createFromGlobals());
+      
+      // Create a UrlMatcher to match the current request against the loaded routes
+      $matcher = new UrlMatcher($routes, $context);
+      ```
 
+  - ## Missing features
+
+    Some features couldn't be implemented due to a lack of time, mainly :
+
+    - The picture management
+    - The account management and authorizations
+    - The forms
+
+    But you can see those features in action by launching the symfony version of the project
