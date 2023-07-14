@@ -62,3 +62,6 @@ The many features of the projects will be added in multiple parts
 - ## Technical Objectives
 
 
+I wanted to use gedmo/doctrine-extensions and create an abstract class containing the Timestampaable fields createdAt & updatedAt that could have been inherited by Post and Commentaire Entities
+
+

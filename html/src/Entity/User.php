@@ -27,6 +27,12 @@ class User
     #[ORM\Column(type: 'string', length: 50)]
     private ?string $username = null;
 
+    #[ORM\Column(type:'datetime_immutable')]
+    private \DateTimeImmutable $createdAt;
+
+    #[ORM\Column(type:'datetime_immutable', nullable: true)]
+    private ?\DateTimeImmutable $updatedAt = null;
+
     // Relations
 
     #[ORM\OneToMany(mappedBy: 'author', targetEntity: Post::class)]
@@ -41,6 +47,7 @@ class User
     {
         $this->posts = new ArrayCollection();
         $this->comments = new ArrayCollection();
+        $this->setCreatedAt(new \DateTimeImmutable());
     }
 
     public function getId(): ?int
@@ -56,6 +63,7 @@ class User
     public function setEmail(?string $email): self
     {
         $this->email = $email;
+        $this->setUpdatedAt(new \DateTimeImmutable());
 
         return $this;
     }
@@ -68,6 +76,7 @@ class User
     public function setPassword(?string $password): self
     {
         $this->password = $password;
+        $this->setUpdatedAt(new \DateTimeImmutable());
 
         return $this;
     }
@@ -80,6 +89,31 @@ class User
     public function setUsername(?string $username): self
     {
         $this->username = $username;
+        $this->setUpdatedAt(new \DateTimeImmutable());
+
+        return $this;
+    }
+
+    public function getCreatedAt(): \DateTimeImmutable
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(\DateTimeImmutable $createdAt): self
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    public function getUpdatedAt(): ?\DateTimeImmutable
+    {
+        return $this->updatedAt;
+    }
+
+    public function setUpdatedAt(?\DateTimeImmutable $updatedAt): self
+    {
+        $this->updatedAt = $updatedAt;
 
         return $this;
     }
@@ -93,7 +127,7 @@ class User
     {
         if (!$this->posts->contains($post)) {
             $this->posts[] = $post;
-            $post->setAuthor($this);
+            $post->setUser($this);
         }
 
         return $this;
@@ -103,8 +137,8 @@ class User
     {
         if ($this->posts->removeElement($post)) {
             // set the owning side to null (unless already changed)
-            if ($post->getAuthor() === $this) {
-                $post->setAuthor(null);
+            if ($post->getUser() === $this) {
+                $post->setUser(null);
             }
         }
 
@@ -120,7 +154,7 @@ class User
     {
         if (!$this->comments->contains($comment)) {
             $this->comments[] = $comment;
-            $comment->setAuthor($this);
+            $comment->setUser($this);
         }
 
         return $this;
@@ -130,8 +164,8 @@ class User
     {
         if ($this->comments->removeElement($comment)) {
             // set the owning side to null (unless already changed)
-            if ($comment->getAuthor() === $this) {
-                $comment->setAuthor(null);
+            if ($comment->getUser() === $this) {
+                $comment->setUser(null);
             }
         }
 

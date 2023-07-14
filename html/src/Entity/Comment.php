@@ -19,6 +19,12 @@ class Comment
     #[ORM\Column(type: 'string')]
     private ?string $content = null;
 
+    #[ORM\Column(type:'datetime_immutable')]
+    private \DateTimeImmutable $createdAt;
+
+    #[ORM\Column(type:'datetime_immutable', nullable: true)]
+    private ?\DateTimeImmutable $updatedAt = null;
+
     // Relations
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'comments')]
@@ -28,6 +34,11 @@ class Comment
     private ?Post $post = null;
 
     // Functions
+
+    public function __construct()
+    {
+        $this->createdAt = new \DateTimeImmutable();
+    }
 
     public function getId(): ?int
     {
@@ -42,6 +53,25 @@ class Comment
     public function setContent(?string $content): self
     {
         $this->content = $content;
+        $this->setUpdatedAt(new \DateTimeImmutable());
+
+        return $this;
+    }
+
+    public function getCreatedAt(): \DateTimeImmutable
+    {
+        return $this->createdAt;
+    }
+
+
+    public function getUpdatedAt(): ?\DateTimeImmutable
+    {
+        return $this->updatedAt;
+    }
+
+    public function setUpdatedAt(?\DateTimeImmutable $updatedAt): self
+    {
+        $this->updatedAt = $updatedAt;
 
         return $this;
     }

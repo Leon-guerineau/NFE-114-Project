@@ -46,5 +46,3 @@ $purger->purge();
 // Load the fixtures
 $executor = new Doctrine\Common\DataFixtures\Executor\ORMExecutor($entityManager, $purger);
 $executor->execute($loader->getFixtures());
-
-// Rest of your application code

@@ -39,6 +39,7 @@ class AppFixtures implements FixtureInterface
             ->setEmail('jean@gmail.com')
             ->setPassword('password')
             ->setUsername("jean1234")
+            ->setUpdatedAt(null)
         ;
         $manager->persist($jean);
 
@@ -46,6 +47,7 @@ class AppFixtures implements FixtureInterface
             ->setEmail('alex@gmail.com')
             ->setPassword('password')
             ->setUsername('00alex00')
+            ->setUpdatedAt(null)
         ;
         $manager->persist($alex);
 
@@ -53,6 +55,7 @@ class AppFixtures implements FixtureInterface
             ->setEmail('sacha@gmail.com')
             ->setPassword('password')
             ->setUsername('sachazerty')
+            ->setUpdatedAt(null)
         ;
         $manager->persist($sacha);
 
@@ -63,6 +66,7 @@ class AppFixtures implements FixtureInterface
                 ->setUsername($fakeUsername)
                 ->setEmail("$fakeUsername@gmail.com")
                 ->setPassword('password')
+                ->setUpdatedAt(null)
             ;
             $manager->persist($dummyUser);
             $this->dummyUsers[$i] = $dummyUser;
@@ -126,6 +130,7 @@ class AppFixtures implements FixtureInterface
             ->setGame($minecraft)
             ->setTitle('Très beau jeu')
             ->setDescription('')
+            ->setUpdatedAt(null)
         ;
         $manager->persist($firstPost);
 
@@ -134,6 +139,7 @@ class AppFixtures implements FixtureInterface
             ->setGame($ff14)
             ->setTitle('Gameplay incroyable')
             ->setDescription('desc')
+            ->setUpdatedAt(null)
         ;
         $manager->persist($secondPost);
 
@@ -147,6 +153,7 @@ class AppFixtures implements FixtureInterface
                 ->setGame($randomGame)
                 ->setTitle('P_' . $faker->word())
                 ->setDescription($faker->sentence(10))
+                ->setUpdatedAt(null)
             ;
             $manager->persist($dummyPost);
             $this->dummyPosts[$i] = $dummyPost;
@@ -158,6 +165,7 @@ class AppFixtures implements FixtureInterface
             ->setUser($jean)
             ->setPost($secondPost)
             ->setContent('yes')
+            ->setUpdatedAt(null)
         ;
         $manager->persist($firstComment);
 
@@ -165,6 +173,7 @@ class AppFixtures implements FixtureInterface
             ->setUser($alex)
             ->setPost($firstPost)
             ->setContent('no')
+            ->setUpdatedAt(null)
         ;
         $manager->persist($secondComment);
 
@@ -177,6 +186,7 @@ class AppFixtures implements FixtureInterface
                 ->setUser($randomUser)
                 ->setPost($randomGame)
                 ->setContent($faker->sentence(10))
+                ->setUpdatedAt(null)
             ;
             $manager->persist($dummyComment);
         }
